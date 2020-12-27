@@ -1,0 +1,46 @@
+{
+  "name": "StockContractHis",
+  "fields": [
+    {
+      "fieldName": "fromContractDt",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "toContractDt",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "contractAmount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "regDtm",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "useYn",
+      "fieldType": "Yn",
+      "fieldValues": "Y,N"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "crmCustom",
+      "otherEntityRelationshipName": "stockContractHis",
+      "relationshipName": "crmCustom",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201224013625",
+  "entityTableName": "stock_contract_his",
+  "dto": true,
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

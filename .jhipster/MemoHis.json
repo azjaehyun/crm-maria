@@ -1,0 +1,39 @@
+{
+  "name": "MemoHis",
+  "fields": [
+    {
+      "fieldName": "memoContent",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "regDtm",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "useYn",
+      "fieldType": "Yn",
+      "fieldValues": "Y,N"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "crmCustom",
+      "otherEntityRelationshipName": "memoHis",
+      "relationshipName": "crmCustom",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201224013425",
+  "javadoc": "메모 정보",
+  "entityTableName": "memo_his",
+  "dto": true,
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

@@ -1,0 +1,51 @@
+{
+  "name": "TeamGrp",
+  "fields": [
+    {
+      "fieldName": "teamCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "teamName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "useYn",
+      "fieldType": "Yn",
+      "fieldValues": "Y,N"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "manager",
+      "otherEntityRelationshipName": "team",
+      "relationshipName": "manager"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "tmManager",
+      "otherEntityRelationshipName": "team",
+      "relationshipName": "tmManager"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "corp",
+      "otherEntityRelationshipName": "teamGrp",
+      "relationshipName": "corp",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201224013125",
+  "javadoc": "영업자 팀명",
+  "entityTableName": "team_grp",
+  "dto": true,
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

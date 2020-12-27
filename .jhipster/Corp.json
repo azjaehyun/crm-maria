@@ -1,0 +1,45 @@
+{
+  "name": "Corp",
+  "fields": [
+    {
+      "fieldName": "corpCode",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "corpName",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "useYn",
+      "fieldType": "Yn",
+      "fieldValues": "Y,N"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "teamGrp",
+      "otherEntityRelationshipName": "corp",
+      "javadoc": "Owner (1) -----> (*) Car Person{drivedCar} to Car{driver}",
+      "relationshipName": "teamGrp"
+    }
+  ],
+  "changelogDate": "20201224012925",
+  "javadoc": "회사 정보",
+  "entityTableName": "corp",
+  "dto": true,
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

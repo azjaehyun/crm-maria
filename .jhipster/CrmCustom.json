@@ -1,0 +1,115 @@
+{
+  "name": "CrmCustom",
+  "fields": [
+    {
+      "fieldName": "corpCode",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "phoneNum",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "fiveDayfreeYn",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "salesStatus",
+      "fieldType": "SalesStatus",
+      "fieldValues": "PAY,FIVEDAYFREE,STANDBY,BLACKLIST,OUT"
+    },
+    {
+      "fieldName": "smsReceptionYn",
+      "fieldType": "SmsReceptionYn",
+      "javadoc": "PAY , FIVEDAYFREE , STANDBY ,  BLACKLIST , OUT",
+      "fieldValues": "Y,N"
+    },
+    {
+      "fieldName": "callStatus",
+      "fieldType": "CallStatus",
+      "fieldValues": "HOPE,REJECT,BLOCK,RECALL,TRY,FREENEED"
+    },
+    {
+      "fieldName": "customStatus",
+      "fieldType": "CustomStatus",
+      "javadoc": "가망  , 차단 , 거절 , 재통화 , 배팅 ,",
+      "fieldValues": "BEST,NOMAl,BAD,WORST"
+    },
+    {
+      "fieldName": "tempOneStatus",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tempTwoStatus",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dbInsertType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "useYn",
+      "fieldType": "Yn",
+      "javadoc": "dbInsertType",
+      "fieldValues": "Y,N"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "memoHis",
+      "otherEntityRelationshipName": "crmCustom",
+      "relationshipName": "memoHis"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "sendSmsHis",
+      "otherEntityRelationshipName": "crmCustom",
+      "relationshipName": "sendSmsHis"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "stockContractHis",
+      "otherEntityRelationshipName": "crmCustom",
+      "relationshipName": "stockContractHis"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "stockConsultingHis",
+      "otherEntityRelationshipName": "crmCustom",
+      "relationshipName": "stockConsultingHis"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "manager",
+      "otherEntityRelationshipName": "crmCustom",
+      "relationshipName": "manager",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tmManager",
+      "otherEntityRelationshipName": "crmCustom",
+      "relationshipName": "tmManager",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201224013025",
+  "javadoc": "고객 정보",
+  "entityTableName": "crm_custom",
+  "dto": true,
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

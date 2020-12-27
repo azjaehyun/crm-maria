@@ -1,0 +1,60 @@
+{
+  "name": "TmManager",
+  "fields": [
+    {
+      "fieldName": "corpCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tmManagerName",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "tmManagerPhoneNum",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "teamCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "crmManageCnt",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "useYn",
+      "fieldType": "Yn",
+      "fieldValues": "Y,N"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "crmCustom",
+      "otherEntityRelationshipName": "tmManager",
+      "relationshipName": "crmCustom"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "teamGrp",
+      "otherEntityRelationshipName": "tmManager",
+      "relationshipName": "team",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201224013325",
+  "javadoc": "TM 관리자 정보",
+  "entityTableName": "tm_manager",
+  "dto": true,
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

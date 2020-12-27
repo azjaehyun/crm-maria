@@ -1,0 +1,68 @@
+{
+  "name": "Manager",
+  "fields": [
+    {
+      "fieldName": "corpCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "managerName",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "managerPhoneNum",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "teamCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "totalSalesAmount",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "enterDay",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "outDay",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "useYn",
+      "fieldType": "Yn",
+      "fieldValues": "Y,N"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "crmCustom",
+      "otherEntityRelationshipName": "manager",
+      "relationshipName": "crmCustom"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "teamGrp",
+      "otherEntityRelationshipName": "manager",
+      "relationshipName": "team",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201224013225",
+  "javadoc": "매지너(영업자) 정보",
+  "entityTableName": "manager",
+  "dto": true,
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

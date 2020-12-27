@@ -1,0 +1,43 @@
+{
+  "name": "SendSmsHis",
+  "fields": [
+    {
+      "fieldName": "sendDtm",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "fromPhoneNum",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "toPhoneNum",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "useYn",
+      "fieldType": "Yn",
+      "fieldValues": "Y,N"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "crmCustom",
+      "otherEntityRelationshipName": "sendSmsHis",
+      "relationshipName": "crmCustom",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20201224013525",
+  "javadoc": "SMS 이력 정보",
+  "entityTableName": "send_sms_his",
+  "dto": true,
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}
