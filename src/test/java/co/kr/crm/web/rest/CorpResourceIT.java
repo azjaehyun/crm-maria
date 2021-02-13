@@ -2,8 +2,11 @@ package co.kr.crm.web.rest;
 
 import co.kr.crm.CrmMariaApp;
 import co.kr.crm.domain.Corp;
+import co.kr.crm.domain.TeamGrp;
 import co.kr.crm.repository.CorpRepository;
 import co.kr.crm.service.CorpService;
+import co.kr.crm.service.dto.CorpCriteria;
+import co.kr.crm.service.CorpQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +48,9 @@ public class CorpResourceIT {
 
     @Autowired
     private CorpService corpService;
+
+    @Autowired
+    private CorpQueryService corpQueryService;
 
     @Autowired
     private EntityManager em;
@@ -194,6 +200,290 @@ public class CorpResourceIT {
             .andExpect(jsonPath("$.corpName").value(DEFAULT_CORP_NAME))
             .andExpect(jsonPath("$.useYn").value(DEFAULT_USE_YN.toString()));
     }
+
+
+    @Test
+    @Transactional
+    public void getCorpsByIdFiltering() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        Long id = corp.getId();
+
+        defaultCorpShouldBeFound("id.equals=" + id);
+        defaultCorpShouldNotBeFound("id.notEquals=" + id);
+
+        defaultCorpShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultCorpShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultCorpShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultCorpShouldNotBeFound("id.lessThan=" + id);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpCodeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpCode equals to DEFAULT_CORP_CODE
+        defaultCorpShouldBeFound("corpCode.equals=" + DEFAULT_CORP_CODE);
+
+        // Get all the corpList where corpCode equals to UPDATED_CORP_CODE
+        defaultCorpShouldNotBeFound("corpCode.equals=" + UPDATED_CORP_CODE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpCodeIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpCode not equals to DEFAULT_CORP_CODE
+        defaultCorpShouldNotBeFound("corpCode.notEquals=" + DEFAULT_CORP_CODE);
+
+        // Get all the corpList where corpCode not equals to UPDATED_CORP_CODE
+        defaultCorpShouldBeFound("corpCode.notEquals=" + UPDATED_CORP_CODE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpCodeIsInShouldWork() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpCode in DEFAULT_CORP_CODE or UPDATED_CORP_CODE
+        defaultCorpShouldBeFound("corpCode.in=" + DEFAULT_CORP_CODE + "," + UPDATED_CORP_CODE);
+
+        // Get all the corpList where corpCode equals to UPDATED_CORP_CODE
+        defaultCorpShouldNotBeFound("corpCode.in=" + UPDATED_CORP_CODE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpCodeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpCode is not null
+        defaultCorpShouldBeFound("corpCode.specified=true");
+
+        // Get all the corpList where corpCode is null
+        defaultCorpShouldNotBeFound("corpCode.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllCorpsByCorpCodeContainsSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpCode contains DEFAULT_CORP_CODE
+        defaultCorpShouldBeFound("corpCode.contains=" + DEFAULT_CORP_CODE);
+
+        // Get all the corpList where corpCode contains UPDATED_CORP_CODE
+        defaultCorpShouldNotBeFound("corpCode.contains=" + UPDATED_CORP_CODE);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpCodeNotContainsSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpCode does not contain DEFAULT_CORP_CODE
+        defaultCorpShouldNotBeFound("corpCode.doesNotContain=" + DEFAULT_CORP_CODE);
+
+        // Get all the corpList where corpCode does not contain UPDATED_CORP_CODE
+        defaultCorpShouldBeFound("corpCode.doesNotContain=" + UPDATED_CORP_CODE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpName equals to DEFAULT_CORP_NAME
+        defaultCorpShouldBeFound("corpName.equals=" + DEFAULT_CORP_NAME);
+
+        // Get all the corpList where corpName equals to UPDATED_CORP_NAME
+        defaultCorpShouldNotBeFound("corpName.equals=" + UPDATED_CORP_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpNameIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpName not equals to DEFAULT_CORP_NAME
+        defaultCorpShouldNotBeFound("corpName.notEquals=" + DEFAULT_CORP_NAME);
+
+        // Get all the corpList where corpName not equals to UPDATED_CORP_NAME
+        defaultCorpShouldBeFound("corpName.notEquals=" + UPDATED_CORP_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpName in DEFAULT_CORP_NAME or UPDATED_CORP_NAME
+        defaultCorpShouldBeFound("corpName.in=" + DEFAULT_CORP_NAME + "," + UPDATED_CORP_NAME);
+
+        // Get all the corpList where corpName equals to UPDATED_CORP_NAME
+        defaultCorpShouldNotBeFound("corpName.in=" + UPDATED_CORP_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpName is not null
+        defaultCorpShouldBeFound("corpName.specified=true");
+
+        // Get all the corpList where corpName is null
+        defaultCorpShouldNotBeFound("corpName.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllCorpsByCorpNameContainsSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpName contains DEFAULT_CORP_NAME
+        defaultCorpShouldBeFound("corpName.contains=" + DEFAULT_CORP_NAME);
+
+        // Get all the corpList where corpName contains UPDATED_CORP_NAME
+        defaultCorpShouldNotBeFound("corpName.contains=" + UPDATED_CORP_NAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByCorpNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where corpName does not contain DEFAULT_CORP_NAME
+        defaultCorpShouldNotBeFound("corpName.doesNotContain=" + DEFAULT_CORP_NAME);
+
+        // Get all the corpList where corpName does not contain UPDATED_CORP_NAME
+        defaultCorpShouldBeFound("corpName.doesNotContain=" + UPDATED_CORP_NAME);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCorpsByUseYnIsEqualToSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where useYn equals to DEFAULT_USE_YN
+        defaultCorpShouldBeFound("useYn.equals=" + DEFAULT_USE_YN);
+
+        // Get all the corpList where useYn equals to UPDATED_USE_YN
+        defaultCorpShouldNotBeFound("useYn.equals=" + UPDATED_USE_YN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByUseYnIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where useYn not equals to DEFAULT_USE_YN
+        defaultCorpShouldNotBeFound("useYn.notEquals=" + DEFAULT_USE_YN);
+
+        // Get all the corpList where useYn not equals to UPDATED_USE_YN
+        defaultCorpShouldBeFound("useYn.notEquals=" + UPDATED_USE_YN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByUseYnIsInShouldWork() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where useYn in DEFAULT_USE_YN or UPDATED_USE_YN
+        defaultCorpShouldBeFound("useYn.in=" + DEFAULT_USE_YN + "," + UPDATED_USE_YN);
+
+        // Get all the corpList where useYn equals to UPDATED_USE_YN
+        defaultCorpShouldNotBeFound("useYn.in=" + UPDATED_USE_YN);
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByUseYnIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+
+        // Get all the corpList where useYn is not null
+        defaultCorpShouldBeFound("useYn.specified=true");
+
+        // Get all the corpList where useYn is null
+        defaultCorpShouldNotBeFound("useYn.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllCorpsByTeamGrpIsEqualToSomething() throws Exception {
+        // Initialize the database
+        corpRepository.saveAndFlush(corp);
+        TeamGrp teamGrp = TeamGrpResourceIT.createEntity(em);
+        em.persist(teamGrp);
+        em.flush();
+        corp.addTeamGrp(teamGrp);
+        corpRepository.saveAndFlush(corp);
+        Long teamGrpId = teamGrp.getId();
+
+        // Get all the corpList where teamGrp equals to teamGrpId
+        defaultCorpShouldBeFound("teamGrpId.equals=" + teamGrpId);
+
+        // Get all the corpList where teamGrp equals to teamGrpId + 1
+        defaultCorpShouldNotBeFound("teamGrpId.equals=" + (teamGrpId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultCorpShouldBeFound(String filter) throws Exception {
+        restCorpMockMvc.perform(get("/api/corps?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(corp.getId().intValue())))
+            .andExpect(jsonPath("$.[*].corpCode").value(hasItem(DEFAULT_CORP_CODE)))
+            .andExpect(jsonPath("$.[*].corpName").value(hasItem(DEFAULT_CORP_NAME)))
+            .andExpect(jsonPath("$.[*].useYn").value(hasItem(DEFAULT_USE_YN.toString())));
+
+        // Check, that the count call also returns 1
+        restCorpMockMvc.perform(get("/api/corps/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultCorpShouldNotBeFound(String filter) throws Exception {
+        restCorpMockMvc.perform(get("/api/corps?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restCorpMockMvc.perform(get("/api/corps/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
+    }
+
     @Test
     @Transactional
     public void getNonExistingCorp() throws Exception {

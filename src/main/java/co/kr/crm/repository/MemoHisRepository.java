@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MemoHisRepository extends JpaRepository<MemoHis, Long> {
+public interface MemoHisRepository extends JpaRepository<MemoHis, Long>, JpaSpecificationExecutor<MemoHis> {
 }

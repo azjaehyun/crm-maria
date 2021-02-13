@@ -19,6 +19,9 @@
             <column name="corp_code" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="crm_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="phone_num" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -79,6 +82,7 @@
                   tableName="crm_custom">
             <column name="id" type="numeric"/>
             <column name="corp_code" type="string"/>
+            <column name="crm_name" type="string"/>
             <column name="phone_num" type="string"/>
             <column name="five_dayfree_yn" type="string"/>
             <column name="sales_status" type="string"/>

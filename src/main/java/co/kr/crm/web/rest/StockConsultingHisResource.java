@@ -3,6 +3,8 @@ package co.kr.crm.web.rest;
 import co.kr.crm.domain.StockConsultingHis;
 import co.kr.crm.service.StockConsultingHisService;
 import co.kr.crm.web.rest.errors.BadRequestAlertException;
+import co.kr.crm.service.dto.StockConsultingHisCriteria;
+import co.kr.crm.service.StockConsultingHisQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -39,8 +41,11 @@ public class StockConsultingHisResource {
 
     private final StockConsultingHisService stockConsultingHisService;
 
-    public StockConsultingHisResource(StockConsultingHisService stockConsultingHisService) {
+    private final StockConsultingHisQueryService stockConsultingHisQueryService;
+
+    public StockConsultingHisResource(StockConsultingHisService stockConsultingHisService, StockConsultingHisQueryService stockConsultingHisQueryService) {
         this.stockConsultingHisService = stockConsultingHisService;
+        this.stockConsultingHisQueryService = stockConsultingHisQueryService;
     }
 
     /**
@@ -87,14 +92,27 @@ public class StockConsultingHisResource {
      * {@code GET  /stock-consulting-his} : get all the stockConsultingHis.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of stockConsultingHis in body.
      */
     @GetMapping("/stock-consulting-his")
-    public ResponseEntity<List<StockConsultingHis>> getAllStockConsultingHis(Pageable pageable) {
-        log.debug("REST request to get a page of StockConsultingHis");
-        Page<StockConsultingHis> page = stockConsultingHisService.findAll(pageable);
+    public ResponseEntity<List<StockConsultingHis>> getAllStockConsultingHis(StockConsultingHisCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get StockConsultingHis by criteria: {}", criteria);
+        Page<StockConsultingHis> page = stockConsultingHisQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /stock-consulting-his/count} : count all the stockConsultingHis.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/stock-consulting-his/count")
+    public ResponseEntity<Long> countStockConsultingHis(StockConsultingHisCriteria criteria) {
+        log.debug("REST request to count StockConsultingHis by criteria: {}", criteria);
+        return ResponseEntity.ok().body(stockConsultingHisQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -73,6 +73,7 @@ class CrmCustomGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "corpCode":"SAMPLE_TEXT"
+                , "crmName":"SAMPLE_TEXT"
                 , "phoneNum":"SAMPLE_TEXT"
                 , "fiveDayfreeYn":"SAMPLE_TEXT"
                 , "salesStatus":"PAY"

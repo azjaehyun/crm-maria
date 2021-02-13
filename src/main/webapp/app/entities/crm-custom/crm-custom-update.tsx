@@ -94,6 +94,19 @@ export const CrmCustomUpdate = (props: ICrmCustomUpdateProps) => {
                 />
               </AvGroup>
               <AvGroup>
+                <Label id="crmNameLabel" for="crm-custom-crmName">
+                  Crm Name
+                </Label>
+                <AvField
+                  id="crm-custom-crmName"
+                  type="text"
+                  name="crmName"
+                  validate={{
+                    required: { value: true, errorMessage: 'This field is required.' },
+                  }}
+                />
+              </AvGroup>
+              <AvGroup>
                 <Label id="phoneNumLabel" for="crm-custom-phoneNum">
                   Phone Num
                 </Label>

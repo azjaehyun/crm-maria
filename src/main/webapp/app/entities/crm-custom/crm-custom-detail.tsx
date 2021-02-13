@@ -30,6 +30,10 @@ export const CrmCustomDetail = (props: ICrmCustomDetailProps) => {
           </dt>
           <dd>{crmCustomEntity.corpCode}</dd>
           <dt>
+            <span id="crmName">Crm Name</span>
+          </dt>
+          <dd>{crmCustomEntity.crmName}</dd>
+          <dt>
             <span id="phoneNum">Phone Num</span>
           </dt>
           <dd>{crmCustomEntity.phoneNum}</dd>

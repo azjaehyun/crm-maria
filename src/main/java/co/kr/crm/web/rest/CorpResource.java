@@ -3,6 +3,8 @@ package co.kr.crm.web.rest;
 import co.kr.crm.domain.Corp;
 import co.kr.crm.service.CorpService;
 import co.kr.crm.web.rest.errors.BadRequestAlertException;
+import co.kr.crm.service.dto.CorpCriteria;
+import co.kr.crm.service.CorpQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -40,8 +42,11 @@ public class CorpResource {
 
     private final CorpService corpService;
 
-    public CorpResource(CorpService corpService) {
+    private final CorpQueryService corpQueryService;
+
+    public CorpResource(CorpService corpService, CorpQueryService corpQueryService) {
         this.corpService = corpService;
+        this.corpQueryService = corpQueryService;
     }
 
     /**
@@ -88,14 +93,27 @@ public class CorpResource {
      * {@code GET  /corps} : get all the corps.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of corps in body.
      */
     @GetMapping("/corps")
-    public ResponseEntity<List<Corp>> getAllCorps(Pageable pageable) {
-        log.debug("REST request to get a page of Corps");
-        Page<Corp> page = corpService.findAll(pageable);
+    public ResponseEntity<List<Corp>> getAllCorps(CorpCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Corps by criteria: {}", criteria);
+        Page<Corp> page = corpQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /corps/count} : count all the corps.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/corps/count")
+    public ResponseEntity<Long> countCorps(CorpCriteria criteria) {
+        log.debug("REST request to count Corps by criteria: {}", criteria);
+        return ResponseEntity.ok().body(corpQueryService.countByCriteria(criteria));
     }
 
     /**

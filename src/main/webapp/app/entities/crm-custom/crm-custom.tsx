@@ -85,6 +85,9 @@ export const CrmCustom = (props: ICrmCustomProps) => {
                 <th className="hand" onClick={sort('corpCode')}>
                   Corp Code <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('crmName')}>
+                  Crm Name <FontAwesomeIcon icon="sort" />
+                </th>
                 <th className="hand" onClick={sort('phoneNum')}>
                   Phone Num <FontAwesomeIcon icon="sort" />
                 </th>
@@ -133,6 +136,7 @@ export const CrmCustom = (props: ICrmCustomProps) => {
                     </Button>
                   </td>
                   <td>{crmCustom.corpCode}</td>
+                  <td>{crmCustom.crmName}</td>
                   <td>{crmCustom.phoneNum}</td>
                   <td>{crmCustom.fiveDayfreeYn}</td>
                   <td>{crmCustom.salesStatus}</td>

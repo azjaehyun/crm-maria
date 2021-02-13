@@ -3,6 +3,8 @@ package co.kr.crm.web.rest;
 import co.kr.crm.domain.MemoHis;
 import co.kr.crm.service.MemoHisService;
 import co.kr.crm.web.rest.errors.BadRequestAlertException;
+import co.kr.crm.service.dto.MemoHisCriteria;
+import co.kr.crm.service.MemoHisQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -39,8 +41,11 @@ public class MemoHisResource {
 
     private final MemoHisService memoHisService;
 
-    public MemoHisResource(MemoHisService memoHisService) {
+    private final MemoHisQueryService memoHisQueryService;
+
+    public MemoHisResource(MemoHisService memoHisService, MemoHisQueryService memoHisQueryService) {
         this.memoHisService = memoHisService;
+        this.memoHisQueryService = memoHisQueryService;
     }
 
     /**
@@ -87,14 +92,27 @@ public class MemoHisResource {
      * {@code GET  /memo-his} : get all the memoHis.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of memoHis in body.
      */
     @GetMapping("/memo-his")
-    public ResponseEntity<List<MemoHis>> getAllMemoHis(Pageable pageable) {
-        log.debug("REST request to get a page of MemoHis");
-        Page<MemoHis> page = memoHisService.findAll(pageable);
+    public ResponseEntity<List<MemoHis>> getAllMemoHis(MemoHisCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get MemoHis by criteria: {}", criteria);
+        Page<MemoHis> page = memoHisQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /memo-his/count} : count all the memoHis.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/memo-his/count")
+    public ResponseEntity<Long> countMemoHis(MemoHisCriteria criteria) {
+        log.debug("REST request to count MemoHis by criteria: {}", criteria);
+        return ResponseEntity.ok().body(memoHisQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface TeamGrpRepository extends JpaRepository<TeamGrp, Long> {
+public interface TeamGrpRepository extends JpaRepository<TeamGrp, Long>, JpaSpecificationExecutor<TeamGrp> {
 }

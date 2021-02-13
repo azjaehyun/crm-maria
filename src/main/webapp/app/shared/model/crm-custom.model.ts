@@ -11,6 +11,7 @@ import { Yn } from 'app/shared/model/enumerations/yn.model';
 export interface ICrmCustom {
   id?: number;
   corpCode?: string;
+  crmName?: string;
   phoneNum?: string;
   fiveDayfreeYn?: string;
   salesStatus?: SalesStatus;

@@ -39,6 +39,10 @@ public class CrmCustom implements Serializable {
     @Column(name = "corp_code", nullable = false)
     private String corpCode;
 
+    @NotNull
+    @Column(name = "crm_name", nullable = false)
+    private String crmName;
+
     @Column(name = "phone_num")
     private String phoneNum;
 
@@ -127,6 +131,19 @@ public class CrmCustom implements Serializable {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getCrmName() {
+        return crmName;
+    }
+
+    public CrmCustom crmName(String crmName) {
+        this.crmName = crmName;
+        return this;
+    }
+
+    public void setCrmName(String crmName) {
+        this.crmName = crmName;
     }
 
     public String getPhoneNum() {
@@ -408,6 +425,7 @@ public class CrmCustom implements Serializable {
         return "CrmCustom{" +
             "id=" + getId() +
             ", corpCode='" + getCorpCode() + "'" +
+            ", crmName='" + getCrmName() + "'" +
             ", phoneNum='" + getPhoneNum() + "'" +
             ", fiveDayfreeYn='" + getFiveDayfreeYn() + "'" +
             ", salesStatus='" + getSalesStatus() + "'" +

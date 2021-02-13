@@ -3,6 +3,8 @@ package co.kr.crm.web.rest;
 import co.kr.crm.domain.TeamGrp;
 import co.kr.crm.service.TeamGrpService;
 import co.kr.crm.web.rest.errors.BadRequestAlertException;
+import co.kr.crm.service.dto.TeamGrpCriteria;
+import co.kr.crm.service.TeamGrpQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -39,8 +41,11 @@ public class TeamGrpResource {
 
     private final TeamGrpService teamGrpService;
 
-    public TeamGrpResource(TeamGrpService teamGrpService) {
+    private final TeamGrpQueryService teamGrpQueryService;
+
+    public TeamGrpResource(TeamGrpService teamGrpService, TeamGrpQueryService teamGrpQueryService) {
         this.teamGrpService = teamGrpService;
+        this.teamGrpQueryService = teamGrpQueryService;
     }
 
     /**
@@ -87,14 +92,27 @@ public class TeamGrpResource {
      * {@code GET  /team-grps} : get all the teamGrps.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of teamGrps in body.
      */
     @GetMapping("/team-grps")
-    public ResponseEntity<List<TeamGrp>> getAllTeamGrps(Pageable pageable) {
-        log.debug("REST request to get a page of TeamGrps");
-        Page<TeamGrp> page = teamGrpService.findAll(pageable);
+    public ResponseEntity<List<TeamGrp>> getAllTeamGrps(TeamGrpCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get TeamGrps by criteria: {}", criteria);
+        Page<TeamGrp> page = teamGrpQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /team-grps/count} : count all the teamGrps.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/team-grps/count")
+    public ResponseEntity<Long> countTeamGrps(TeamGrpCriteria criteria) {
+        log.debug("REST request to count TeamGrps by criteria: {}", criteria);
+        return ResponseEntity.ok().body(teamGrpQueryService.countByCriteria(criteria));
     }
 
     /**

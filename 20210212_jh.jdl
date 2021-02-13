@@ -1,0 +1,147 @@
+
+/** 회사 정보 */
+@dto
+entity Corp {
+   corpCode String required,
+   corpName String required,
+   useYn Yn
+}
+
+/** 고객 정보 */
+@dto
+entity CrmCustom {
+	corpCode String  required,
+    crmName String required,
+    phoneNum String  ,
+    fiveDayfreeYn String  required,
+    salesStatus SalesStatus, /**   PAY , FIVEDAYFREE , STANDBY ,  BLACKLIST , OUT   */
+    smsReceptionYn SmsReceptionYn,
+    callStatus CallStatus , /** 가망  , 차단 , 거절 , 재통화 , 배팅 ,  */
+    customStatus CustomStatus,
+    tempOneStatus String ,
+    tempTwoStatus String ,
+    dbInsertType String , /** dbInsertType */
+    useYn Yn
+}
+
+/** 영업자 팀명 */
+@dto
+entity TeamGrp {
+  teamCode String  ,
+  teamName String  , 
+  useYn Yn
+}
+
+/** 매지너(영업자) 정보  */
+@dto
+entity Manager {
+	corpCode String  ,
+    managerName String   required,
+    managerPhoneNum String  ,
+    teamCode String  , 
+    totalSalesAmount Integer  , 
+    enterDay LocalDate  ,
+    outDay LocalDate  ,
+    useYn Yn
+}
+/** TM 관리자 정보  */
+@dto
+entity TmManager {
+	corpCode String  ,
+    tmManagerName String   required,
+    tmManagerPhoneNum String  ,
+    teamCode String  , 
+    crmManageCnt Integer ,
+    useYn Yn
+}
+
+/** 메모 정보 */
+@dto
+entity MemoHis {
+    memoContent String ,
+    regDtm LocalDate  ,
+    useYn Yn
+}
+
+/** SMS 이력 정보 */
+@dto
+entity SendSmsHis{
+	sendDtm LocalDate ,
+    fromPhoneNum String ,
+    toPhoneNum String ,
+    useYn Yn
+}
+
+@dto
+entity StockContractHis{
+	fromContractDt LocalDate ,
+    toContractDt LocalDate ,
+    contractAmount Integer ,
+	regDtm LocalDate ,
+    useYn Yn 
+}
+
+@dto
+entity StockConsultingHis{
+	consultingMemo String ,
+	regDtm LocalDate ,
+    
+    useYn Yn 
+}
+
+
+
+/** 사용 여부 */
+enum Yn {
+   Y , N 
+}
+
+/** 문자 수신 여부 */
+enum SmsReceptionYn {
+	Y , N
+}
+
+/** 영업 상태 */
+enum SalesStatus {
+    PAY , FIVEDAYFREE , STANDBY ,  BLACKLIST , OUT 
+}
+/** 가망  , 차단 , 거절 , 재통화 , 배팅  */
+enum CallStatus {
+	HOPE , REJECT , BLOCK , RECALL , TRY , FREENEED 	
+}
+
+/** 고객 상태 */
+/**최상 , 노말 , 나쁨 , 최악 */ 
+enum CustomStatus{
+     BEST , NOMAl , BAD , WORST 
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+    /** Owner (1) -----> (*) Car Person{drivedCar} to Car{driver} */
+    Corp to TeamGrp{corp} ,
+    TeamGrp to Manager{team} ,
+    TeamGrp to TmManager{team} , 
+  	Manager  to CrmCustom{manager} ,
+    TmManager to CrmCustom{tmManager} ,
+    CrmCustom to MemoHis{crmCustom} ,
+    CrmCustom to SendSmsHis{crmCustom} ,
+    CrmCustom to  StockContractHis{crmCustom} ,
+    CrmCustom to StockConsultingHis{crmCustom} 
+}
+	
+
+paginate all with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+filter *
+
+//filter all with dto
+
+// Set service options to all except few
+service all with serviceImpl 
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

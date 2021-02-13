@@ -3,6 +3,8 @@ package co.kr.crm.web.rest;
 import co.kr.crm.domain.StockContractHis;
 import co.kr.crm.service.StockContractHisService;
 import co.kr.crm.web.rest.errors.BadRequestAlertException;
+import co.kr.crm.service.dto.StockContractHisCriteria;
+import co.kr.crm.service.StockContractHisQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -39,8 +41,11 @@ public class StockContractHisResource {
 
     private final StockContractHisService stockContractHisService;
 
-    public StockContractHisResource(StockContractHisService stockContractHisService) {
+    private final StockContractHisQueryService stockContractHisQueryService;
+
+    public StockContractHisResource(StockContractHisService stockContractHisService, StockContractHisQueryService stockContractHisQueryService) {
         this.stockContractHisService = stockContractHisService;
+        this.stockContractHisQueryService = stockContractHisQueryService;
     }
 
     /**
@@ -87,14 +92,27 @@ public class StockContractHisResource {
      * {@code GET  /stock-contract-his} : get all the stockContractHis.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of stockContractHis in body.
      */
     @GetMapping("/stock-contract-his")
-    public ResponseEntity<List<StockContractHis>> getAllStockContractHis(Pageable pageable) {
-        log.debug("REST request to get a page of StockContractHis");
-        Page<StockContractHis> page = stockContractHisService.findAll(pageable);
+    public ResponseEntity<List<StockContractHis>> getAllStockContractHis(StockContractHisCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get StockContractHis by criteria: {}", criteria);
+        Page<StockContractHis> page = stockContractHisQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /stock-contract-his/count} : count all the stockContractHis.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/stock-contract-his/count")
+    public ResponseEntity<Long> countStockContractHis(StockContractHisCriteria criteria) {
+        log.debug("REST request to count StockContractHis by criteria: {}", criteria);
+        return ResponseEntity.ok().body(stockContractHisQueryService.countByCriteria(criteria));
     }
 
     /**

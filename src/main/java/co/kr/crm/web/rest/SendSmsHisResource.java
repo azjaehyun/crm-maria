@@ -3,6 +3,8 @@ package co.kr.crm.web.rest;
 import co.kr.crm.domain.SendSmsHis;
 import co.kr.crm.service.SendSmsHisService;
 import co.kr.crm.web.rest.errors.BadRequestAlertException;
+import co.kr.crm.service.dto.SendSmsHisCriteria;
+import co.kr.crm.service.SendSmsHisQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -39,8 +41,11 @@ public class SendSmsHisResource {
 
     private final SendSmsHisService sendSmsHisService;
 
-    public SendSmsHisResource(SendSmsHisService sendSmsHisService) {
+    private final SendSmsHisQueryService sendSmsHisQueryService;
+
+    public SendSmsHisResource(SendSmsHisService sendSmsHisService, SendSmsHisQueryService sendSmsHisQueryService) {
         this.sendSmsHisService = sendSmsHisService;
+        this.sendSmsHisQueryService = sendSmsHisQueryService;
     }
 
     /**
@@ -87,14 +92,27 @@ public class SendSmsHisResource {
      * {@code GET  /send-sms-his} : get all the sendSmsHis.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of sendSmsHis in body.
      */
     @GetMapping("/send-sms-his")
-    public ResponseEntity<List<SendSmsHis>> getAllSendSmsHis(Pageable pageable) {
-        log.debug("REST request to get a page of SendSmsHis");
-        Page<SendSmsHis> page = sendSmsHisService.findAll(pageable);
+    public ResponseEntity<List<SendSmsHis>> getAllSendSmsHis(SendSmsHisCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get SendSmsHis by criteria: {}", criteria);
+        Page<SendSmsHis> page = sendSmsHisQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /send-sms-his/count} : count all the sendSmsHis.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/send-sms-his/count")
+    public ResponseEntity<Long> countSendSmsHis(SendSmsHisCriteria criteria) {
+        log.debug("REST request to count SendSmsHis by criteria: {}", criteria);
+        return ResponseEntity.ok().body(sendSmsHisQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -3,6 +3,8 @@ package co.kr.crm.web.rest;
 import co.kr.crm.domain.Manager;
 import co.kr.crm.service.ManagerService;
 import co.kr.crm.web.rest.errors.BadRequestAlertException;
+import co.kr.crm.service.dto.ManagerCriteria;
+import co.kr.crm.service.ManagerQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -40,8 +42,11 @@ public class ManagerResource {
 
     private final ManagerService managerService;
 
-    public ManagerResource(ManagerService managerService) {
+    private final ManagerQueryService managerQueryService;
+
+    public ManagerResource(ManagerService managerService, ManagerQueryService managerQueryService) {
         this.managerService = managerService;
+        this.managerQueryService = managerQueryService;
     }
 
     /**
@@ -88,14 +93,27 @@ public class ManagerResource {
      * {@code GET  /managers} : get all the managers.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of managers in body.
      */
     @GetMapping("/managers")
-    public ResponseEntity<List<Manager>> getAllManagers(Pageable pageable) {
-        log.debug("REST request to get a page of Managers");
-        Page<Manager> page = managerService.findAll(pageable);
+    public ResponseEntity<List<Manager>> getAllManagers(ManagerCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Managers by criteria: {}", criteria);
+        Page<Manager> page = managerQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /managers/count} : count all the managers.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/managers/count")
+    public ResponseEntity<Long> countManagers(ManagerCriteria criteria) {
+        log.debug("REST request to count Managers by criteria: {}", criteria);
+        return ResponseEntity.ok().body(managerQueryService.countByCriteria(criteria));
     }
 
     /**

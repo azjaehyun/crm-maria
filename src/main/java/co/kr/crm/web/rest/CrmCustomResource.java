@@ -3,6 +3,8 @@ package co.kr.crm.web.rest;
 import co.kr.crm.domain.CrmCustom;
 import co.kr.crm.service.CrmCustomService;
 import co.kr.crm.web.rest.errors.BadRequestAlertException;
+import co.kr.crm.service.dto.CrmCustomCriteria;
+import co.kr.crm.service.CrmCustomQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -40,8 +42,11 @@ public class CrmCustomResource {
 
     private final CrmCustomService crmCustomService;
 
-    public CrmCustomResource(CrmCustomService crmCustomService) {
+    private final CrmCustomQueryService crmCustomQueryService;
+
+    public CrmCustomResource(CrmCustomService crmCustomService, CrmCustomQueryService crmCustomQueryService) {
         this.crmCustomService = crmCustomService;
+        this.crmCustomQueryService = crmCustomQueryService;
     }
 
     /**
@@ -88,14 +93,27 @@ public class CrmCustomResource {
      * {@code GET  /crm-customs} : get all the crmCustoms.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of crmCustoms in body.
      */
     @GetMapping("/crm-customs")
-    public ResponseEntity<List<CrmCustom>> getAllCrmCustoms(Pageable pageable) {
-        log.debug("REST request to get a page of CrmCustoms");
-        Page<CrmCustom> page = crmCustomService.findAll(pageable);
+    public ResponseEntity<List<CrmCustom>> getAllCrmCustoms(CrmCustomCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get CrmCustoms by criteria: {}", criteria);
+        Page<CrmCustom> page = crmCustomQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /crm-customs/count} : count all the crmCustoms.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/crm-customs/count")
+    public ResponseEntity<Long> countCrmCustoms(CrmCustomCriteria criteria) {
+        log.debug("REST request to count CrmCustoms by criteria: {}", criteria);
+        return ResponseEntity.ok().body(crmCustomQueryService.countByCriteria(criteria));
     }
 
     /**

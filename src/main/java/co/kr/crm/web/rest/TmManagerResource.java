@@ -3,6 +3,8 @@ package co.kr.crm.web.rest;
 import co.kr.crm.domain.TmManager;
 import co.kr.crm.service.TmManagerService;
 import co.kr.crm.web.rest.errors.BadRequestAlertException;
+import co.kr.crm.service.dto.TmManagerCriteria;
+import co.kr.crm.service.TmManagerQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -40,8 +42,11 @@ public class TmManagerResource {
 
     private final TmManagerService tmManagerService;
 
-    public TmManagerResource(TmManagerService tmManagerService) {
+    private final TmManagerQueryService tmManagerQueryService;
+
+    public TmManagerResource(TmManagerService tmManagerService, TmManagerQueryService tmManagerQueryService) {
         this.tmManagerService = tmManagerService;
+        this.tmManagerQueryService = tmManagerQueryService;
     }
 
     /**
@@ -88,14 +93,27 @@ public class TmManagerResource {
      * {@code GET  /tm-managers} : get all the tmManagers.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tmManagers in body.
      */
     @GetMapping("/tm-managers")
-    public ResponseEntity<List<TmManager>> getAllTmManagers(Pageable pageable) {
-        log.debug("REST request to get a page of TmManagers");
-        Page<TmManager> page = tmManagerService.findAll(pageable);
+    public ResponseEntity<List<TmManager>> getAllTmManagers(TmManagerCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get TmManagers by criteria: {}", criteria);
+        Page<TmManager> page = tmManagerQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /tm-managers/count} : count all the tmManagers.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/tm-managers/count")
+    public ResponseEntity<Long> countTmManagers(TmManagerCriteria criteria) {
+        log.debug("REST request to count TmManagers by criteria: {}", criteria);
+        return ResponseEntity.ok().body(tmManagerQueryService.countByCriteria(criteria));
     }
 
     /**

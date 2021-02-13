@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CrmCustomRepository extends JpaRepository<CrmCustom, Long> {
+public interface CrmCustomRepository extends JpaRepository<CrmCustom, Long>, JpaSpecificationExecutor<CrmCustom> {
 }
